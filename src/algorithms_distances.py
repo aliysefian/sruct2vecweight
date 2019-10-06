@@ -6,7 +6,7 @@ from fastdtw import fastdtw
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from utils import *
 import os
-
+path_pickle=""
 
 def get_degree_lists_vertices(g, vertices, calc_until_layer, is_directed, in_degrees, out_degrees):
     degree_list = {}
@@ -695,7 +695,7 @@ def generate_distances_network(workers):
     t0 = time()
     logging.info('Creating distance network...')
 
-    os.system("rm " + return_path_struc2vec() + "/../pickles/weights_distances-layer-*.pickle")
+    os.system("rm " + return_path_struc2vec() + "/../pickles/"+str(path_pickle)+"/weights_distances-layer-*.pickle")
     with ProcessPoolExecutor(max_workers=1) as executor:
         job = executor.submit(generate_distances_network_part1, workers)
         job.result()
@@ -704,7 +704,7 @@ def generate_distances_network(workers):
     logging.info('- Time - part 1: {}s'.format(t))
 
     t0 = time()
-    os.system("rm " + return_path_struc2vec() + "/../pickles/graphs-layer-*.pickle")
+    os.system("rm " + return_path_struc2vec() + "/../pickles/"+str(path_pickle)+"/graphs-layer-*.pickle")
     with ProcessPoolExecutor(max_workers=1) as executor:
         job = executor.submit(generate_distances_network_part2, workers)
         job.result()
@@ -716,9 +716,9 @@ def generate_distances_network(workers):
     logging.info('Transforming distances into weights...')
 
     t0 = time()
-    os.system("rm " + return_path_struc2vec() + "/../pickles/distances_nets_weights-layer-*.pickle")
-    os.system("rm " + return_path_struc2vec() + "/../pickles/alias_method_j-layer-*.pickle")
-    os.system("rm " + return_path_struc2vec() + "/../pickles/alias_method_q-layer-*.pickle")
+    os.system("rm " + return_path_struc2vec() + "/../pickles/"+str(path_pickle)+"/distances_nets_weights-layer-*.pickle")
+    os.system("rm " + return_path_struc2vec() + "/../pickles/"+str(path_pickle)+"/alias_method_j-layer-*.pickle")
+    os.system("rm " + return_path_struc2vec() + "/../pickles/"+str(path_pickle)+"/alias_method_q-layer-*.pickle")
     with ProcessPoolExecutor(max_workers=1) as executor:
         job = executor.submit(generate_distances_network_part3)
         job.result()
@@ -782,3 +782,6 @@ def alias_setup(probs):
             larger.append(large)
 
     return J, q
+def path_pickle(path):
+    global path_pickle
+    path_pickle=path

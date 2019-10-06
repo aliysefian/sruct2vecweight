@@ -6,9 +6,13 @@ import graph
 from gensim.models import Word2Vec
 from gensim.models.word2vec import LineSentence
 
-from utils import save_variable_on_disk
+from algorithms_distances import path_pickle
+from algorithms import path_random_walk
+from utils import restore_variable_from_disk
+from utils import set_path
 
 logging.basicConfig(filename='struc2vec.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(message)s')
+random_walk_path = ""
 
 
 def parse_args():
@@ -65,6 +69,8 @@ def parse_args():
                         help='optimization 2')
     parser.add_argument('--OPT3', default=False, type=bool,
                         help='optimization 3')
+    parser.add_argument('--item', default=False, type=int,
+                        help='item name pl')
     return parser.parse_args()
 
 
@@ -72,13 +78,13 @@ def read_graph(args):
     """
     Reads the input network.
     """
+    from utils import save_variable_on_disk
+
     logging.info(" - Loading graph...")
     graph_dict, in_degrees, out_degrees, val_density = graph.load_edgelist(args.input, args.directed, args.weighted)
-    save_variable_on_disk(val_density,"density")
+    save_variable_on_disk(val_density, "density")
     logging.info(" - Graph Density Save.")
-
-
-
+    ss = restore_variable_from_disk("density")
     logging.info(" - Graph loaded.")
     return graph_dict, in_degrees, out_degrees, val_density
 
@@ -100,7 +106,7 @@ def learn_embeddings():
     Learn embeddings by optimizing the Skipgram objective using SGD.
     """
     logging.info("Initializing creation of the representations...")
-    walks = LineSentence('random_walks.txt')
+    walks = LineSentence(random_walk_path+"random_walks.txt")
     model = Word2Vec(walks, size=args.dimensions, window=args.window_size, min_count=0, hs=1, sg=1,
                      workers=args.workers, iter=args.iter)
     model.wv.save_word2vec_format(args.output)
@@ -115,7 +121,15 @@ def exec_struc2vec(args):
     """
     if args.weighted and not args.directed:
         raise NotImplementedError('edge weights are only implemented for directed graphs')
-
+    item_paralel = None
+    if args.item:
+        item_paralel = args.item
+    pathhhh = set_path(item_paralel)
+    path_pickle(item_paralel)
+    path_random_walk(pathhhh)
+    global random_walk_path
+    random_walk_path = pathhhh
+    ss = item_paralel
     if args.OPT3:
         until_layer = args.until_layer
     else:

@@ -14,7 +14,7 @@ def return_path_struc2vec():
 
 
 def is_pickle(fname):
-    return os.path.isfile(dir_f + '/../pickles/' + fname + '.pickle')
+    return os.path.isfile(folder_pickles+ fname + '.pickle')
 
 
 def chunks(data, size=10000):
@@ -41,7 +41,24 @@ def restore_variable_from_disk(name):
 
 
 def save_variable_on_disk(f, name):
-    logging.info('Saving variable on disk...'+folder_pickles + name + '.pickle')
+    logging.info('Saving variable on disk...' + folder_pickles + name + '.pickle')
+    t0 = time()
+    name_of_file = folder_pickles
+    if not os.path.exists(name_of_file):
+        os.makedirs(name_of_file)
+    with open(folder_pickles + name + '.pickle', 'wb') as handle:
+        pickle.dump(f, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    t1 = time()
+    logging.info('Variable saved. Time: {}m'.format((t1 - t0) / 60))
+    logging.info(f)
+
+    return
+
+
+def save_variable_on_disk_th(f, name, id):
+    import main
+    print (main.ss)
+    logging.info('Saving variable on disk...' + folder_pickles + name + '.pickle')
     t0 = time()
     with open(folder_pickles + name + '.pickle', 'wb') as handle:
         pickle.dump(f, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -50,3 +67,9 @@ def save_variable_on_disk(f, name):
     logging.info(f)
 
     return
+
+
+def set_path(var):
+    global folder_pickles
+    folder_pickles = folder_pickles+str(var)+"/"
+    return folder_pickles

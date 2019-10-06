@@ -5,6 +5,13 @@ import math, random
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from utils import *
 
+path_random_walk = ""
+
+
+def path_random_walk(path):
+    global path_random_walk
+    path_random_walk = path+'random_walks.txt'
+
 
 def generate_parameters_random_walk():
     """
@@ -134,7 +141,7 @@ def generate_random_walks_large_graphs(num_walks, walk_length, workers, vertices
     alias_method_q = restore_variable_from_disk('nets_weights_alias_method_q')
     amount_neighbours = restore_variable_from_disk('amount_neighbours')
 
-    logging.info('Creating RWs...')
+    logging.info('Creating RWs...gggg')
     t0 = time()
 
     walks = deque()
@@ -203,7 +210,7 @@ def generate_random_walks(num_walks, walk_length, workers, vertices):
 
 
 def save_random_walks(walks):
-    with open('random_walks.txt', 'w') as file:
+    with open(path_random_walk, 'w') as file:
         for walk in walks:
             line = ''
             for v in walk:
