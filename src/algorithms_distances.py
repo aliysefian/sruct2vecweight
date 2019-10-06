@@ -415,8 +415,8 @@ def calc_distances_all(vertices, list_vertices, degree_list, part, compact_degre
         cont += 1
 
     _consolidate_distances(distances)
-    print ("distancseeessss")
-    print (distances)
+    # print ("distancseeessss")
+    # print (distances)
     save_variable_on_disk(distances, 'distances-' + str(part))
 
 
@@ -509,7 +509,7 @@ def exec_bfs(G, workers, calc_until_layer, is_directed, in_degrees, out_degrees,
     logging.info('Saving degreeList on disk ... (is_directed={})'.format(is_directed))
     save_variable_on_disk(degree_list, 'degreeList')
     # Bfs in lenght of everthings
-    print (degree_list)
+    # print (degree_list)
     t1 = time()
     logging.info('Execution time - BFS: {}m'.format((t1 - t0) / 60))
     logging.info('Aliiiiiiiiiii Execution time - BFS: {}m'.format((t1 - t0) / 60))
@@ -542,9 +542,9 @@ def generate_distances_network_part1(workers):
 
     for layer, values in weights_distances.iteritems():
         save_variable_on_disk(values, 'weights_distances-layer-' + str(layer))
-        print ("layers")
-        print (layer)
-        print (values)
+        # print ("layers")
+        # print (layer)
+        # print (values)
 
 
 def generate_distances_network_part2(workers):
@@ -623,8 +623,8 @@ def generate_distances_network_part3():
         save_variable_on_disk(alias_method_q, 'alias_method_q-layer-' + str(layer))
         logging.info('Layer {} executed.'.format(layer))
         layer += 1
-        print ("weight" + str(layer))
-        print (weights)
+        # print ("weight" + str(layer))
+        # print (weights)
     logging.info('Weights created.')
 
 
