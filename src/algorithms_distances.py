@@ -623,8 +623,8 @@ def generate_distances_network_part3():
         save_variable_on_disk(alias_method_q, 'alias_method_q-layer-' + str(layer))
         logging.info('Layer {} executed.'.format(layer))
         layer += 1
-        print ("weight" + str(layer))
-        print (weights)
+        # print ("weight" + str(layer))
+        # print (weights)
     logging.info('Weights created.')
 
 
