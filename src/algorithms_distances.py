@@ -604,9 +604,9 @@ def generate_distances_network_part3():
 
             for n in neighbors:
                 if (v, n) in weights_distances:
-                    wd = weights_distances[v, n] * density_we.get(v, 0)
+                    wd = weights_distances[v, n] + density_we.get(v, 0)
                 else:
-                    wd = weights_distances[n, v] * density_we.get(n, 0)
+                    wd = weights_distances[n, v] + density_we.get(n, 0)
                     # print(weights_distances[n, v])
                 w = np.exp(-float(wd))
                 e_list.append(w)
